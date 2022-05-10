@@ -28,14 +28,23 @@ const AddItem = () => {
                     <p>You must choose a type...</p>
                 </div>
             )}
-            {typeOfItem === "tShirt" && <ItemForm typeOfItem={typeOfItem} />}
-            {typeOfItem === "shirt" && <ItemForm typeOfItem={typeOfItem} />}
+            {[
+                "tShirt",
+                "shirt",
+                "sweater",
+                "trousers",
+                "shorts",
+                "jacket",
+                "shoes",
+                "accessory"
+            ].includes(typeOfItem) && <ItemForm typeOfItem={typeOfItem} />}
+            {/* {typeOfItem === "shirt" && <ItemForm typeOfItem={typeOfItem} />}
             {typeOfItem === "sweater" && <ItemForm typeOfItem={typeOfItem} />}
             {typeOfItem === "trousers" && <ItemForm typeOfItem={typeOfItem} />}
             {typeOfItem === "shorts" && <ItemForm typeOfItem={typeOfItem} />}
             {typeOfItem === "jacket" && <ItemForm typeOfItem={typeOfItem} />}
             {typeOfItem === "shoes" && <ItemForm typeOfItem={typeOfItem} />}
-            {typeOfItem === "accessory" && <ItemForm typeOfItem={typeOfItem} />}
+            {typeOfItem === "accessory" && <ItemForm typeOfItem={typeOfItem} />} */}
         </div>
     )
 }

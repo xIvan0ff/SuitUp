@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from "uuid"
 import { useHistory } from "react-router-dom"
 import { ClothesContext } from "../contexts/ClothesContext"
 import styles from "../css/ItemForm.module.css"
+import stylesAddItem from "../css/AddItem.module.css"
+import capitalize from "just-capitalize"
+import { colorOptions } from "../data/colors"
 
 const ItemForm = ({ typeOfItem }) => {
     const { dispatch } = useContext(ClothesContext)
@@ -17,7 +20,7 @@ const ItemForm = ({ typeOfItem }) => {
         setDescription(e.target.value)
     }
     const handleColorChange = (e) => {
-        setColor(e.target.value)
+        setColor(capitalize(e.target.value))
     }
     const handleBrandChange = (e) => {
         setBrand(e.target.value)
@@ -36,7 +39,7 @@ const ItemForm = ({ typeOfItem }) => {
                 description,
                 color,
                 brand,
-                id: uuidv4(),
+                id: uuidv4()
             }
             dispatch({ type: "ADD_ITEM", newItem })
             history.push("/")
@@ -60,13 +63,36 @@ const ItemForm = ({ typeOfItem }) => {
                 <div>
                     <label>Color of the {typeOfItem}</label>
                     <br />
-                    <input
+                    {/* <input
                         name="color"
                         type="text"
                         placeholder="Color..."
                         onChange={handleColorChange}
                         required
-                    />
+                    /> */}
+                    <select
+                        className={stylesAddItem.select}
+                        onChange={handleColorChange}
+                    >
+                        <option value="">Color...</option>
+                        {colorOptions.map((color) => (
+                            <option key={color.value} value={color.value}>
+                                {color.label}
+                            </option>
+                        ))}
+                    </select>
+                    {/* <Select
+                        className="basic-single"
+                        classNamePrefix="select"
+                        defaultValue={colourOptions[0]}
+                        // isDisabled={isDisabled}
+                        // isLoading={isLoading`}
+                        // isClearable={isClearable}
+                        // isRtl={isRtl}
+                        // isSearchable={isSearchable}
+                        name="color"
+                        options={colourOptions}
+                    /> */}
                 </div>
                 <div>
                     <label>Brand</label>
@@ -81,7 +107,7 @@ const ItemForm = ({ typeOfItem }) => {
                 </div>
                 <button type="submit">Add the item</button>
             </form>
-            <div>{feedback && <p className="feedback">feedback</p>}</div>
+            <div>{feedback && <p className="feedback">{feedback}</p>}</div>
         </div>
     )
 }

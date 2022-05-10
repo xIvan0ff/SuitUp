@@ -3,7 +3,12 @@ import { useContext, useState, useEffect } from "react"
 import styles from "../css/OutfitPicker.module.css"
 import OutfitDisplay from "./OutfitDisplay"
 import { v4 as uuidv4 } from "uuid"
-import { getWeather } from "../api/weather"
+import {
+    getHumidityByCity,
+    getTemperatureByCity,
+    getWeatherByCity
+} from "../api/weather"
+import { colorsArray } from "../data/colors"
 
 const OutfitPicker = () => {
     const { clothes } = useContext(ClothesContext)
@@ -41,9 +46,11 @@ const OutfitPicker = () => {
     )
 
     const [temp, setTemp] = useState()
+    const [humidity, setHumidity] = useState()
 
     useEffect(() => {
-        getWeather().then(setTemp)
+        getTemperatureByCity().then(setTemp)
+        getHumidityByCity().then(setHumidity)
     }, [])
 
     const handleChange = (e) => {
@@ -64,6 +71,7 @@ const OutfitPicker = () => {
     const pickOutfitAccordingToTemp = (e) => {
         e.preventDefault()
         const someOutfit = []
+        const randColor = getRandomItem(colorsArray)
 
         if (temp < 11) {
             someOutfit.push(getRandomItem(tShirts))
@@ -72,7 +80,7 @@ const OutfitPicker = () => {
             someOutfit.push(getRandomItem(shirts))
         }
 
-        if (temp < 15) {
+        if (temp < 18) {
             someOutfit.push(getRandomItem(trousers))
         } else {
             someOutfit.push(getRandomItem(shorts))
@@ -89,7 +97,7 @@ const OutfitPicker = () => {
         console.log(someOutfit)
         setRandomOutfit([
             ...someOutfit,
-            { timestamp: new Date().getTime(), id: uuidv4() },
+            { timestamp: new Date().getTime(), id: uuidv4() }
         ])
     }
 
@@ -124,7 +132,7 @@ const OutfitPicker = () => {
         console.log(someOutfit)
         setRandomOutfit([
             ...someOutfit,
-            { timestamp: new Date().getTime(), id: uuidv4() },
+            { timestamp: new Date().getTime(), id: uuidv4() }
         ])
     }
 
@@ -221,7 +229,8 @@ const OutfitPicker = () => {
             </form>
             {temp && (
                 <p className={styles.lead} style={{ marginTop: 50 }}>
-                    Current temperature in Burgas is {temp}°C{" "}
+                    Current temperature in Burgas is {temp}°C and humidity is{" "}
+                    {humidity}
                 </p>
             )}
             <form on onSubmit={pickOutfitAccordingToTemp}>
